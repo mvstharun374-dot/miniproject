@@ -1,0 +1,713 @@
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/qiyokikevu/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Unique Advanced Resume Builder</title>
+    <link rel="stylesheet" href="style.css" />
+<style id="jsbin-css">
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: #f4f7f8;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark {
+    background-color: #121212;
+    color: #eee;
+}
+
+.top-bar {
+    background-color: #0b62a4;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-bar button {
+    background-color: #eee;
+    color: #0b62a4;
+    border: none;
+    padding: 8px 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.top-bar button:hover {
+    background-color: #ddd;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 8px;
+    padding: 30px 40px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, color 0.3s;
+}
+
+body.dark .container {
+    background: #222;
+    color: #eee;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 700;
+}
+
+input[type=text],
+input[type=email],
+input[type=tel],
+textarea,
+input[type=file] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    background: #fff;
+    color: #000;
+}
+
+body.dark input[type=text],
+body.dark input[type=email],
+body.dark input[type=tel],
+body.dark textarea,
+body.dark input[type=file] {
+    background: #333;
+    color: #eee;
+    border-color: #555;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+button {
+    margin-top: 15px;
+    cursor: pointer;
+    background: #0b62a4;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-weight: 700;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background: #094a7a;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.section {
+    margin-top: 30px;
+}
+
+.draggable-list {
+    padding: 0;
+    margin: 10px 0 20px 0;
+    list-style: none;
+}
+
+.entry {
+    position: relative;
+    background-color: #e9f1fb;
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border-radius: 5px;
+}
+
+body.dark .entry {
+    background-color: #333b46;
+}
+
+.entry label {
+    font-weight: 600;
+    margin-top: 0;
+}
+
+.entry input[type=text],
+.entry textarea {
+    margin-top: 4px;
+}
+
+.remove-entry {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    background: #d9534f;
+    border: none;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 16px;
+    text-align: center;
+    padding: 0;
+}
+
+.preview-img-container {
+    text-align: center;
+    margin-top: 12px;
+}
+
+#profilePreview {
+    max-width: 120px;
+    border-radius: 50%;
+    border: 3px solid #0b62a4;
+    display: none;
+}
+
+.resume-preview {
+    display: none;
+    background: #f0f6fc;
+    padding: 30px;
+    border-radius: 8px;
+    margin-top: 40px;
+    color: #222;
+    box-sizing: border-box;
+}
+
+body.dark .resume-preview {
+    background: #1f2937;
+    color: #e2e8f0;
+}
+
+.resume-preview img {
+    width: 110px;
+    border-radius: 50%;
+    border: 2px solid #0b62a4;
+    display: block;
+    margin: 0 auto 15px auto;
+}
+
+.resume-preview h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+}
+
+.resume-preview h3 {
+    font-size: 1.2rem;
+    margin-top: 25px;
+    border-bottom: 2px solid #0b62a4;
+    padding-bottom: 6px;
+}
+
+.resume-preview ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 10px;
+}
+
+.preview-buttons {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.preview-buttons button {
+    margin: 0 10px;
+    width: 140px;
+}
+
+.form-buttons {
+    margin-top: 20px;
+    text-align: center;
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.form-buttons button {
+    flex: 1 1 120px;
+    margin: 6px;
+}
+
+/* Scrollbar for draggable containers */
+.draggable-list {
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #0b62a4 #e0e6f3;
+}
+
+.draggable-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.draggable-list::-webkit-scrollbar-track {
+    background: #e0e6f3;
+}
+
+.draggable-list::-webkit-scrollbar-thumb {
+    background-color: #0b62a4;
+    border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 650px) {
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    button,
+    .btn-small {
+        width: 100%;
+        margin: 6px 0 !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <h1>Advanced Resume Builder</h1>
+        <button id="toggle-theme">Toggle Dark Mode</button>
+    </div>
+
+    <div class="container">
+        <form id="resume-form">
+
+            <label for="profilePic">Profile Picture</label>
+            <input type="file" id="profilePic" accept="image/*" />
+
+            <div class="preview-img-container">
+                <img id="profilePreview" alt="Profile Preview" />
+            </div>
+
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" placeholder="John Doe" required />
+
+            <label for="email">Email *</label>
+            <input type="email" id="email" placeholder="your.email@example.com" required />
+
+            <label for="phone">Phone *</label>
+            <input type="tel" id="phone" placeholder="+91 9876543210" required />
+
+            <label for="summary">Professional Summary</label>
+            <textarea id="summary" placeholder="Briefly describe yourself..."></textarea>
+
+            <section id="education-section" class="draggable-section">
+                <h2>Education</h2>
+                <div id="education-entries" class="draggable-list"></div>
+                <button type="button" onclick="addEducation()">+ Add Education</button>
+            </section>
+
+            <section id="experience-section" class="draggable-section">
+                <h2>Work Experience</h2>
+                <div id="experience-entries" class="draggable-list"></div>
+                <button type="button" onclick="addExperience()">+ Add Experience</button>
+            </section>
+
+            <section id="projects-section" class="draggable-section">
+                <h2>Projects</h2>
+                <div id="projects-entries" class="draggable-list"></div>
+                <button type="button" onclick="addProject()">+ Add Project</button>
+            </section>
+
+            <label for="skills">Skills (comma separated)</label>
+            <input type="text" id="skills" placeholder="JavaScript, Python, HTML, CSS" />
+
+            <div class="form-buttons">
+                <button type="button" onclick="generateResume()">Generate Resume</button>
+                <button type="button" onclick="saveToLocal()">Save Progress</button>
+                <button type="button" onclick="loadFromLocal()">Load Saved</button>
+                <button type="button" onclick="clearLocal()">Clear Saved</button>
+            </div>
+
+        </form>
+
+        <section id="resume-preview" class="resume-preview">
+            <img id="previewProfilePic" alt="Profile Picture" />
+            <h2 id="previewFullName"></h2>
+            <p><strong>Email:</strong> <span id="previewEmail"></span></p>
+            <p><strong>Phone:</strong> <span id="previewPhone"></span></p>
+            <p id="previewSummary"></p>
+
+            <div>
+                <h3>Education</h3>
+                <ul id="previewEducation"></ul>
+            </div>
+
+            <div>
+                <h3>Work Experience</h3>
+                <ul id="previewExperience"></ul>
+            </div>
+
+            <div>
+                <h3>Projects</h3>
+                <ul id="previewProjects"></ul>
+            </div>
+
+            <p><strong>Skills:</strong> <span id="previewSkills"></span></p>
+
+            <div class="preview-buttons">
+                <button onclick="editResume()">Edit</button>
+                <button onclick="downloadPDF()">Download PDF</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="script.js"></script>
+
+<script id="jsbin-javascript">
+const form = document.getElementById('resume-form');
+const profilePicInput = document.getElementById('profilePic');
+const profilePreview = document.getElementById('profilePreview');
+const previewProfilePic = document.getElementById('previewProfilePic');
+
+// Handle profile picture preview
+profilePicInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        profilePreview.src = e.target.result;
+        profilePreview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+});
+
+function createEntry(labelText, placeholder, isTextarea = false) {
+    const container = document.createElement('div');
+    container.className = 'entry';
+
+    const label = document.createElement('label');
+    label.textContent = labelText;
+    container.appendChild(label);
+
+    let input;
+    if (isTextarea) {
+        input = document.createElement('textarea');
+        input.rows = 3;
+    } else {
+        input = document.createElement('input');
+        input.type = 'text';
+    }
+    input.className = 'entry-input';
+    input.placeholder = placeholder;
+    container.appendChild(input);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'remove-entry';
+    removeBtn.type = 'button';
+    removeBtn.textContent = '×';
+    removeBtn.addEventListener('click', () => {
+        container.remove();
+    });
+    container.appendChild(removeBtn);
+
+    return container;
+}
+
+function addEducation() {
+    const container = document.getElementById('education-entries');
+    container.appendChild(createEntry('Degree & Institution', 'e.g. B.Tech in CS, XYZ University', false));
+}
+
+function addExperience() {
+    const container = document.getElementById('experience-entries');
+    container.appendChild(createEntry('Role & Description', 'e.g. Software Engineer at ABC Corp', true));
+}
+
+function addProject() {
+    const container = document.getElementById('projects-entries');
+    const entry = createEntry('Project & Links', 'e.g. Project X - github.com/user/project', true);
+    container.appendChild(entry);
+}
+
+// Drag & Drop using SortableJS
+new Sortable(document.getElementById('education-entries'), {
+    animation: 150,
+    ghostClass: 'sortable-ghost'
+});
+new Sortable(document.getElementById('experience-entries'), {
+    animation: 150,
+    ghostClass: 'sortable-ghost'
+});
+new Sortable(document.getElementById('projects-entries'), {
+    animation: 150,
+    ghostClass: 'sortable-ghost'
+});
+
+function escapeHtml(text) {
+    if (!text) return '';
+    return text.replace(/[&<>"']/g, c => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[c]);
+}
+
+function generateListHtml(elements) {
+    let html = '';
+    elements.forEach(el => {
+        const val = el.value.trim();
+        if (val) html += `<li>${escapeHtml(val)}</li>`;
+    });
+    return html || '<li>N/A</li>';
+}
+
+function generateResume() {
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const summary = document.getElementById('summary').value.trim();
+    const skills = document.getElementById('skills').value.trim();
+
+    if (!fullName || !email || !phone) {
+        alert('Please fill required fields: Name, Email, and Phone.');
+        return;
+    }
+
+    // Profile Pic preview
+    if (profilePreview.src) previewProfilePic.src = profilePreview.src;
+    else previewProfilePic.style.display = 'none';
+
+    // Education
+    const eduElements = document.querySelectorAll('#education-entries .entry-input');
+    const educationHtml = generateListHtml(eduElements);
+    document.getElementById('previewEducation').innerHTML = educationHtml;
+
+    // Experience
+    const expElements = document.querySelectorAll('#experience-entries .entry-input');
+    const experienceHtml = generateListHtml(expElements);
+    document.getElementById('previewExperience').innerHTML = experienceHtml;
+
+    // Projects
+    const projElements = document.querySelectorAll('#projects-entries .entry-input');
+    const projectsHtml = generateListHtml(projElements);
+    document.getElementById('previewProjects').innerHTML = projectsHtml;
+
+    // Fill other info
+    document.getElementById('previewFullName').textContent = fullName;
+    document.getElementById('previewEmail').textContent = email;
+    document.getElementById('previewPhone').textContent = phone;
+    document.getElementById('previewSummary').textContent = summary || 'Not provided.';
+    document.getElementById('previewSkills').textContent = skills || 'Not provided.';
+
+    // Show preview, hide form
+    document.getElementById('resume-form').style.display = 'none';
+    document.getElementById('resume-preview').style.display = 'block';
+}
+
+function editResume() {
+    document.getElementById('resume-form').style.display = 'block';
+    document.getElementById('resume-preview').style.display = 'none';
+}
+
+async function downloadPDF() {
+    const {
+        jsPDF
+    } = window.jspdf;
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const leftMargin = 40;
+    let y = 40;
+
+    // Add profile picture if exists
+    const img = document.getElementById('previewProfilePic');
+    if (img && img.src) {
+        const imgProps = doc.getImageProperties(img.src);
+        const pdfWidth = 80;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        doc.addImage(img.src, 'JPEG', leftMargin, y, pdfWidth, pdfHeight);
+    }
+
+    y += 90;
+    doc.setFontSize(22);
+    doc.setTextColor("#0b62a4");
+    doc.text(document.getElementById('previewFullName').textContent, leftMargin, y);
+    y += 30;
+
+    doc.setFontSize(12);
+    doc.setTextColor("#333");
+    doc.text(`Email: ${document.getElementById('previewEmail').textContent}`, leftMargin, y);
+    y += 16;
+    doc.text(`Phone: ${document.getElementById('previewPhone').textContent}`, leftMargin, y);
+    y += 30;
+
+    doc.setFontSize(16);
+    doc.setTextColor("#0b62a4");
+    doc.text('Professional Summary', leftMargin, y);
+    y += 22;
+
+    doc.setFontSize(12);
+    doc.setTextColor("#000");
+    const summaryText = document.getElementById('previewSummary').textContent;
+    const splitSummary = doc.splitTextToSize(summaryText, 520);
+    doc.text(splitSummary, leftMargin, y);
+    y += splitSummary.length * 14 + 10;
+
+    function addSection(title, listId) {
+        doc.setFontSize(16);
+        doc.setTextColor("#0b62a4");
+        doc.text(title, leftMargin, y);
+        y += 22;
+
+        doc.setFontSize(12);
+        doc.setTextColor("#000");
+
+        const list = document.getElementById(listId);
+        for (const li of list.children) {
+            const lines = doc.splitTextToSize(li.textContent, 500);
+            for (let i = 0; i < lines.length; i++) {
+                doc.text(`- ${lines[i]}`, leftMargin + 10, y);
+                y += 14;
+            }
+            y += 6;
+        }
+        y += 10;
+    }
+
+    addSection('Education', 'previewEducation');
+    addSection('Work Experience', 'previewExperience');
+    addSection('Projects', 'previewProjects');
+
+    doc.setFontSize(16);
+    doc.setTextColor("#0b62a4");
+    doc.text('Skills', leftMargin, y);
+    y += 22;
+
+    doc.setFontSize(12);
+    doc.setTextColor("#000");
+    doc.text(document.getElementById('previewSkills').textContent, leftMargin, y);
+
+    doc.save('resume.pdf');
+}
+
+// Local Storage
+function saveToLocal() {
+    const data = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        summary: document.getElementById('summary').value,
+        skills: document.getElementById('skills').value,
+        education: Array.from(document.querySelectorAll('#education-entries .entry-input')).map(el => el.value),
+        experience: Array.from(document.querySelectorAll('#experience-entries .entry-input')).map(el => el.value),
+        projects: Array.from(document.querySelectorAll('#projects-entries .entry-input')).map(el => el.value),
+        profilePic: profilePreview.src || ''
+    };
+    localStorage.setItem('resumeData', JSON.stringify(data));
+    alert('Progress saved locally!');
+}
+
+function loadFromLocal() {
+    const data = JSON.parse(localStorage.getItem('resumeData'));
+    if (!data) {
+        alert('No saved data found.');
+        return;
+    }
+
+    // Fill inputs
+    document.getElementById('fullName').value = data.fullName || '';
+    document.getElementById('email').value = data.email || '';
+    document.getElementById('phone').value = data.phone || '';
+    document.getElementById('summary').value = data.summary || '';
+    document.getElementById('skills').value = data.skills || '';
+
+    // Education
+    const eduContainer = document.getElementById('education-entries');
+    eduContainer.innerHTML = '';
+    (data.education || []).forEach(val => {
+        const entry = createEntry('Degree & Institution', '', false);
+        entry.querySelector('input').value = val;
+        eduContainer.appendChild(entry);
+    });
+    if (!data.education || data.education.length === 0) addEducation();
+
+    // Experience
+    const expContainer = document.getElementById('experience-entries');
+    expContainer.innerHTML = '';
+    (data.experience || []).forEach(val => {
+        const entry = createEntry('Role & Description', '', true);
+        entry.querySelector('textarea').value = val;
+        expContainer.appendChild(entry);
+    });
+    if (!data.experience || data.experience.length === 0) addExperience();
+
+    // Projects
+    const projContainer = document.getElementById('projects-entries');
+    projContainer.innerHTML = '';
+    (data.projects || []).forEach(val => {
+        const entry = createEntry('Project & Links', '', true);
+        entry.querySelector('textarea').value = val;
+        projContainer.appendChild(entry);
+    });
+    if (!data.projects || data.projects.length === 0) addProject();
+
+    // Profile Pic
+    if (data.profilePic) {
+        profilePreview.src = data.profilePic;
+        profilePreview.style.display = 'block';
+    } else {
+        profilePreview.src = '';
+        profilePreview.style.display = 'none';
+    }
+
+    alert('Progress loaded!');
+}
+
+function clearLocal() {
+    if (confirm('Are you sure you want to clear saved data?')) {
+        localStorage.removeItem('resumeData');
+        alert('Saved data cleared.');
+    }
+}
+
+// Dark mode toggle
+document.getElementById('toggle-theme').addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+});
+
+// Initialize with one entry each
+window.onload = () => {
+    if (!localStorage.getItem('resumeData')) {
+        addEducation();
+        addExperience();
+        addProject();
+    }
+};
+</script>
+</body>
+
+</html>
